@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Forecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Expense Forecast for the Next 30 Days</h2>
+    <canvas id="forecastChart"></canvas>
+
+    <script>
+        async function fetchForecast() {
+            const response = await fetch('/forecast');
+            const data = await response.json();
+            
+            const labels = data.map(item => item.ds);  // Dates
+            const values = data.map(item => item.yhat); // Predicted Values
+
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Predicted Expenses',
+                        data: values,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Date' } },
+                        y: { title: { display: true, text: 'Predicted Amount' } }
+                    }
+                }
+            });
+        }
+
+        fetchForecast();  // Call function to load data on page load
+    </script>
+</body>
+</html>
