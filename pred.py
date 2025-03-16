@@ -8,7 +8,7 @@ import numpy as np
 def load_and_preprocess():
     df = pd.read_csv("expense_data_1.csv")  # Load dataset inside the function
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # Convert Date to datetime
-    df = df[df['Income/Expense'] == 'Expense']  # Keep only expenses
+    
     df = df[['Date', 'Amount']].dropna()  # Keep relevant columns and drop NaNs
     df = df.rename(columns={'Date': 'ds', 'Amount': 'y'})  # Rename for Prophet
     return df
@@ -81,6 +81,7 @@ def process_expense_data():
     # Aggregate expenses by category
     category_expenses = df_expense.groupby("Category")["Amount"].sum().to_dict()
 def piechart():
+    df=pd.read_csv(r"expense_data_1.csv")
     # Check if 'Income/Expense' and 'Category' columns exist
     if 'Income/Expense' not in df.columns or 'Category' not in df.columns:
         return {"error": "Required columns are missing"}
