@@ -1,0 +1,14 @@
+$body = @{
+    Date = "2025-03-18"
+    Category = "Food"
+    Amount = 500
+    "Income/Expense" = "Expense"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://127.0.0.1:5000/add-expense" `
+                  -Method Post `
+                  -ContentType "application/json" `
+                  -Body $body
+
+
+C:\Users\KIIT\AppData\Local\Programs\Python\Python311\python.exe C:\Users\KIIT\Finance-predictor\api.py (for me only fuckers)
