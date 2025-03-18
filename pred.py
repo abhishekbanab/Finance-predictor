@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 # Load and preprocess dataset
   # Corrected file path
+df = pd.read_csv("expense_data_1.csv")
 def load_and_preprocess():
     df = pd.read_csv("expense_data_1.csv")  # Load dataset inside the function
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # Convert Date to datetime
@@ -32,11 +33,14 @@ def get_prediction():
     return forecast  # Return forecast instead of plotting inside function
 
 def top_expense():
-    top_expenses = df.nlargest(10, 'Amount')
-    print(top_expenses.head())
-    #top_expenses=top_expenses.drop('Currency',axis=1)
-   # print(top_expenses)
-    return top_expenses
+    df = pd.read_csv("expense_data_1.csv")  # Ensure fresh data is loaded
+
+    if 'Amount' not in df.columns:
+        return {"error": "Missing 'Amount' column in CSV"}
+
+    top_expenses = df.nlargest(10, 'Amount')  # Get top 10 largest expenses
+
+    return top_expenses.to_dict(orient="records") 
 def next_month_prediction():
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 
