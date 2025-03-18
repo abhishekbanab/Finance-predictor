@@ -73,7 +73,7 @@ def next_month_prediction():
     # Print predicted expense
 def process_expense_data():
     
-
+    df=pd.csv_read(r"expense_data_1.csv")
     # Filter out income-related entries
     income_categories = ["Salary", "Allowance", "Monthly Income", "Petty Cash"]
     df_expense = df[(df['Income/Expense'] == 'Expense') & (~df['Category'].isin(income_categories))]
@@ -103,9 +103,10 @@ def piechart():
     print(category_expenses)
     return category_expenses if category_expenses else {"error": "No expense data found"}
 def add_expense_to_csv(expense_data):
+    df=pd.read_csv(r"expense_data_1.csv")
     try:
         # Load existing data
-
+        
         # Convert new entry to DataFrame
         new_entry = pd.DataFrame([expense_data])
 
