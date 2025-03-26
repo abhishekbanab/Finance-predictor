@@ -120,10 +120,25 @@ def add_expense_to_csv(expense_data):
     except Exception as e:
         return {"error": str(e)}
 def transactions(n=5):
+    df = pd.read_csv(r"C:\Users\KIIT\Finance-predictor\expense_data_1.csv")
+
     try:
+        # Drop rows where 'Date' is NaN and convert Date to datetime format
         df = df.dropna(subset=['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+        df = df.dropna(subset=['Date'])  # Drop rows where 'Date' couldn't be parsed
+
+        # Keep only relevant columns & drop NaN values in essential fields
+        df = df[['Note', 'Amount', 'Category', 'Date']].dropna()
+
+        # Convert 'Amount' to numeric and drop invalid values
+        df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
+        df = df.dropna(subset=['Amount'])
+
+        # Sort by latest date and return n most recent transactions
         recent_transactions = df.sort_values(by='Date', ascending=False).head(n)
+
         return recent_transactions.to_dict(orient='records')
+    
     except Exception as e:
         return {"error": str(e)}
-get_prediction()
